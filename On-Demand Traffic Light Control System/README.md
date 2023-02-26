@@ -25,12 +25,12 @@ The system consists of 4 layers from top to bottom:
 3.	Microcontroller unit abstraction layer (MCAL)
 4.	Microcontroller layer
 
-<img src="system-layers.png" alt="On-Demand Traffic Light Control System Layers">
+<img src="system-layers.png" alt="On-Demand Traffic Light Control System Layers" width=500px>
 
 ### System Drivers
 The system consists of the following drivers: DIO, Timers, Global Interrupts (GIE), External Interrupts (EXTI), LED, Button, Interrupts, Delay. 
 
-<img src="system-drivers.png" alt="On-Demand Traffic Light Control System Drivers">
+<img src="system-drivers.png" alt="On-Demand Traffic Light Control System Drivers" width=500px>
 
 ### System API
 Check the project documentation for the full description of each driver API.
@@ -93,7 +93,7 @@ En_appError_t APP_init(void);
 En_appError_t APP_start(void);
 ```
 
-### System State Diagram
+## System State Diagram
 The system can be visualized using state transition diagram where the system has three states: normal, pedestrian waiting, and pedestrian crossing. 
 
 <img src="state-machine-diagram.PNG" alt="On-Demand Traffic Light Control System Diagram">
