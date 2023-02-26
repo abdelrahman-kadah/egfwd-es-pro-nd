@@ -30,7 +30,7 @@ The system consists of 4 layers from top to bottom:
 ### System Drivers
 The system consists of the following drivers: DIO, Timers, Global Interrupts (GIE), External Interrupts (EXTI), LED, Button, Interrupts, Delay. 
 
-<img src="system-drivers.png" alt="On-Demand Traffic Light Control System Drivers" width=500px>
+<img src="system-drivers-2.png" alt="On-Demand Traffic Light Control System Drivers" width=500px>
 
 ### System API
 Check the project documentation for the full description of each driver API.
