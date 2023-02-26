@@ -4,11 +4,11 @@ For the sake of explanation, the LED sequence of each mode and how each mode is 
 
 <img src="design.PNG" alt="On-Demand Traffic Light Control Circuit">
 
-## Normal Mode
+### Normal Mode
 1.	Cars' LEDs will be changed every five seconds starting from Green then yellow then red then yellow then Green.
 2.	The Yellow LED will blink for five seconds before moving to Green or Red LEDs.
 
-## Pedestrian Mode
+### Pedestrian Mode
 1.	Change from normal mode to pedestrian mode when the pedestrian button is pressed.
 2.	If pressed when the cars' Red LED is on, the pedestrian's Green LED and the cars' Red LEDs will be on for five seconds, this means that pedestrians can cross the street while the pedestrian's Green LED is on.
 3.	If pressed when the cars' Green LED is on or the cars' Yellow LED is blinking, the pedestrian Red LED will be on then both Yellow LEDs start to blink for five seconds, then the cars' Red LED and pedestrian Green LEDs are on for five seconds, this means that pedestrian must wait until the Green LED is on.
@@ -18,47 +18,49 @@ For the sake of explanation, the LED sequence of each mode and how each mode is 
 
 # System Design
 
-## System Layers
+### System Layers
 The system consists of 4 layers from top to bottom:
 1.	Application layer
 2.	Electronic control unit abstraction layer (ECUAL)
 3.	Microcontroller unit abstraction layer (MCAL)
 4.	Microcontroller layer
-<img src="system-layers.PNG" alt="On-Demand Traffic Light Control System Layers">
 
-## System Drivers
+<img src="system-layers.png" alt="On-Demand Traffic Light Control System Layers">
+
+### System Drivers
 The system consists of the following drivers: DIO, Timers, Global Interrupts (GIE), External Interrupts (EXTI), LED, Button, Interrupts, Delay. 
-<img src="system-drivers.PNG" alt="On-Demand Traffic Light Control System Drivers">
 
-## System API
+<img src="system-drivers.png" alt="On-Demand Traffic Light Control System Drivers">
+
+### System API
 Check the project documentation for the full description of each driver API.
-### DIO Driver
+#### DIO Driver
 ```C
 En_dioError_t DIO_init(En_dioPort_t portNumber, En_dioPin_t pinNumber, En_dioDirection_t direction);
 En_dioError_t DIO_write(En_dioPort_t portNumber, En_dioPin_t pinNumber, En_dioValue_t value);
 En_dioError_t DIO_read(En_dioPort_t portNumber, En_dioPin_t pinNumber, uint8_t* value);
 En_dioError_t DIO_toggle(En_dioPort_t portNumber, En_dioPin_t pinNumber);
 ```
-### Timer 0 Driver
+#### Timer 0 Driver
 ```C
 En_timerError_t TIMER0_init(uint8_t timerInitValue);
 En_timerError_t TIMER0_start(En_timerPrescaler_t clockPrescaler);
 En_timerError_t TIMER0_getState(void);
 En_timerError_t TIMER0_stop(void);
 ```
-### GIE Driver
+#### GIE Driver
 ```C
 En_gieError_t GIE_enable(void);
 En_gieError_t GIE_disable(void);
 ```
-### EXTI Driver
+#### EXTI Driver
 ```C
 En_extiError_t EXTI_int0Init(void);
 En_extiError_t EXTI_int0SetCallback(void(*int0Func)(void));
 En_extiError_t EXTI_int0SetInterruptTrigger(En_interruptTrigger_t interruptTrigger);
 
 ```
-### LED Driver
+#### LED Driver
 ```C
 En_ledError_t LED_init(En_dioPort_t ledPort, En_dioPin_t ledPin);
 En_ledError_t LED_on(En_dioPort_t ledPort, En_dioPin_t ledPin);
@@ -67,16 +69,16 @@ En_ledError_t LED_toggle(En_dioPort_t ledPort, En_dioPin_t ledPin);
 En_ledError_t LED_read(En_dioPort_t ledPort, En_dioPin_t ledPin, uint8_t* data); 
 ```
 
-### Button Driver
+#### Button Driver
 ```C
 En_buttonError_t BUTTON_init(En_dioPort_t buttonPort, En_dioPin_t buttonPin);
 En_buttonError_t BUTTON_read(En_dioPort_t buttonPort, En_dioPin_t buttonPin, uint8_t* value);
 ```
-### Delay Driver
+#### Delay Driver
 ```C
 void setDelayInMsec(uint16_t delay);
 ``` 
-### Interrupt Driver
+#### Interrupt Driver
 ```C
 En_interruptError_t INTERRUPT_GIE_enable(void);
 En_interruptError_t INTERRUPT_GIE_disable(void);
@@ -85,15 +87,17 @@ En_interruptError_t INTERRUPT_EXTI_int0SetCallback(void(*int0Func)(void));
 En_interruptError_t INTERRUPT_EXTI_int0SetInterruptTrigger(En_interruptTrigger_t interruptTrigger);
 ```
 
-### Application Driver
+#### Application Driver
 ```C
 En_appError_t APP_init(void);
 En_appError_t APP_start(void);
 ```
 
-## System State Diagram
+### System State Diagram
 The system can be visualized using state transition diagram where the system has three states: normal, pedestrian waiting, and pedestrian crossing. 
-<img src="system-machine-diagram.PNG" alt="On-Demand Traffic Light Control System Diagram">
+
+<img src="state-machine-diagram.PNG" alt="On-Demand Traffic Light Control System Diagram">
+
 When the system starts, it enters the normal state.
 If the pedestrian button is pressed while the cars’ red LED is on, the system enters the pedestrian crossing state where the pedestrian is crossing the street. 
 After the pedestrian crossing time is finished the system returns to the normal state. 
